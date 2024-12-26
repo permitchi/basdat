@@ -64,9 +64,8 @@ body {
       font-size: 12px;
     }
   }
-
-   /* Bagian query */
-.query-section {
+/* Bagian query */
+   .query-section {
     margin-top: 20px;
     text-align: center;
     color: white;
