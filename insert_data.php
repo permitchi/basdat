@@ -12,8 +12,9 @@
         $stmt = $conn->prepare("Insert into siswa(nama,nim,alamat,prodi,ukt)values(?,?,?,?,?)");
         $stmt->bind_param("sissi", $nama, $nim, $alamat, $prodi, $ukt);
         $stmt->execute();
-        echo "Input data successfully";
         $stmt->close();
-        $conn->close();
+        $conn-> close();
+
+        header('Location: /basdat/tabel_data.php');
     }
 ?>

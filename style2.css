@@ -86,3 +86,12 @@ body {
 .query-section button:hover {
     background-color: #007bff;
 }
+
+.query-section button:active {
+  background-color: #007bff;
+}
+
+.resultArea {
+  padding: 10px;
+  margin: auto;
+}

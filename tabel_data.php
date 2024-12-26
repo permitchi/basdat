@@ -49,5 +49,48 @@
         <button onclick="showOutlier()">Data Pencilan</button>
         <button onclick="showStdDev()">Standar Deviasi</button>
     </div>
+    
+    <div id="resultStats"></div>
+    <div id="resultOutlier"></div>
+    <div id="resultStdev"></div>
 </body>
+
+<script>
+function showStatistic() {
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            // Display the result in an element with ID 'resultArea'
+            document.getElementById('resultStats').innerHTML = "Standard Deviation: " + this.responseText;
+        }
+    };
+    request.open("GET", "stats.php", true);
+    request.send();
+}
+
+function showOutlier() {
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            // Display the result in an element with ID 'resultArea'
+            document.getElementById('resultOutlier').innerHTML = "Standard Deviation: " + this.responseText;
+        }
+    };
+    request.open("GET", "outlier.php", true);
+    request.send();
+}
+
+function showStdDev() {
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            // Display the result in an element with ID 'resultArea'
+            document.getElementById('resultStdev').innerHTML = "Standard Deviation: " + this.responseText;
+        }
+    };
+    request.open("GET", "stdev.php", true);
+    request.send();
+}
+</script>
+
 </html>
