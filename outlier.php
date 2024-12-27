@@ -50,6 +50,16 @@ try {
     echo "<br>Lower Bound: $lowerBound";
     echo "<br>Upper Bound: $upperBound";
 
+    // Identifikasi outlier
+    $outliers = array_filter($data, function($value) use ($lowerBound, $upperBound) {
+        return $value < $lowerBound || $value > $upperBound;
+    });
+
+    // Hitung standar deviasi langsung dari database
+    $stdQuery = $pdo->query("SELECT STDDEV(ukt) as std FROM siswa");
+    $stdDev = $stdQuery->fetch(PDO::FETCH_COLUMN);
+    echo "<br>Standar Deviasi: $stdDev";
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
