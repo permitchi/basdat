@@ -22,7 +22,6 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Contoh data -->
         <tr>
           <?php
           $conn = mysqli_connect("localhost", "root", '', "basdat");
@@ -50,9 +49,11 @@
         <button onclick="showStdDev()">Standar Deviasi</button>
     </div>
     
-    <div id="resultStats"></div>
-    <div id="resultOutlier"></div>
-    <div id="resultStdev"></div>
+    <div id="resultContainer">
+      <div id="resultStats" style="display: none;"></div>
+      <div id="resultOutlier" style="display: none;"></div>
+      <div id="resultStdev" style="display: none;"></div>
+    </div>
 </body>
 
 <script>
@@ -60,8 +61,10 @@ function showStatistic() {
     var request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            // Display the result in an element with ID 'resultArea'
-            document.getElementById('resultStats').innerHTML = "Standard Deviation: " + this.responseText;
+            resetDisplay(); // Hide other sections
+            var statsDiv = document.getElementById('resultStats');
+            statsDiv.innerHTML = "Statistik 5 serangkai: " + this.responseText;
+            statsDiv.style.display = 'block'; // Show the stats section
         }
     };
     request.open("GET", "stats.php", true);
@@ -72,8 +75,10 @@ function showOutlier() {
     var request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            // Display the result in an element with ID 'resultArea'
-            document.getElementById('resultOutlier').innerHTML = "Standard Deviation: " + this.responseText;
+            resetDisplay(); // Hide other sections
+            var outlierDiv = document.getElementById('resultOutlier');
+            outlierDiv.innerHTML = "Outlier: " + this.responseText;
+            outlierDiv.style.display = 'block'; // Show the outlier section
         }
     };
     request.open("GET", "outlier.php", true);
@@ -84,12 +89,21 @@ function showStdDev() {
     var request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            // Display the result in an element with ID 'resultArea'
-            document.getElementById('resultStdev').innerHTML = "Standard Deviation: " + this.responseText;
+            resetDisplay(); // Hide other sections
+            var stdevDiv = document.getElementById('resultStdev');
+            stdevDiv.innerHTML = "Standard Deviation: " + this.responseText;
+            stdevDiv.style.display = 'block'; // Show the stdev section
         }
     };
     request.open("GET", "stdev.php", true);
     request.send();
+}
+
+function resetDisplay() {
+    // Hide all result sections
+    document.getElementById('resultStats').style.display = 'none';
+    document.getElementById('resultOutlier').style.display = 'none';
+    document.getElementById('resultStdev').style.display = 'none';
 }
 </script>
 
