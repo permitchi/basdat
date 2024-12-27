@@ -14,25 +14,51 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Menghitung rata-rata dan standar deviasi UKT
-    $query = "SELECT AVG(ukt) AS avg_ukt, STDDEV(ukt) AS std_dev FROM siswa";
+    // Ambil data UKT dari tabel siswa dan urutkan
+    $query = "SELECT ukt FROM siswa ORDER BY ukt";
     $stmt = $pdo->query($query);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    $data = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-    // Mendapatkan rata-rata dan standar deviasi
-    $avgUkt = $result['avg_ukt'];
-    $stdDevUkt = $result['std_dev'];
+    if (count($data) < 4) {
+        echo "Data tidak cukup untuk menghitung pencilan.";
+        exit;
+    }
 
-    // Menentukan batas untuk outlier
-    $lowerBound = $avgUkt - 2 * $stdDevUkt;
-    $upperBound = $avgUkt + 2 * $stdDevUkt;
+    // Hitung Q1, Median, dan Q3
+    $count = count($data);
+    $q1Index = floor(($count + 1) / 4) - 1; // Index Q1
+    $medianIndex = floor(($count + 1) / 2) - 1; // Index Median
+    $q3Index = floor((3 * ($count + 1)) / 4) - 1; // Index Q3
+
+    $q1 = $data[$q1Index];
+    $median = $data[$medianIndex];
+    $q3 = $data[$q3Index];
+
+    // Hitung IQR
+    $iqr = $q3 - $q1;
+
+    // Hitung batas bawah dan atas
+    $lowerBound = $q1 - (1.5 * $iqr);
+    $upperBound = $q3 + (1.5 * $iqr);
 
     // Memeriksa apakah nilai UKT yang dimasukkan adalah outlier
-    if ($ukt < $lowerBound || $ukt > $upperBound) {
-        echo "Nilai UKT ($ukt) adalah outlier.";
-    } else {
-        echo "Nilai UKT ($ukt) tidak termasuk outlier.";
+    if ($ukt !== null) {
+        if ($ukt < $lowerBound || $ukt > $upperBound) {
+            echo "Nilai UKT ($ukt) adalah outlier.";
+        } else {
+            echo "Nilai UKT ($ukt) tidak termasuk outlier.";
+        }
     }
+
+    // Tampilkan informasi statistik
+    echo "<br>Data UKT: " . implode(", ", $data);
+    echo "<br>Q1: $q1";
+    echo "<br>Median: $median";
+    echo "<br>Q3: $q3";
+    echo "<br>IQR: $iqr";
+    echo "<br>Lower Bound: $lowerBound";
+    echo "<br>Upper Bound: $upperBound";
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
