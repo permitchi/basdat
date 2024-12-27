@@ -24,7 +24,7 @@ try {
 
     echo "Minimum: " . $min . "<br>";
     echo "Q1: " . $q1 . "<br>";
-    echo "Q2: " . $median . "<br>";
+    echo "Median: " . $median . "<br>";
     echo "Q3: " . $q3 . "<br>";
     echo "Maximum: " . $max . "<br>";
 

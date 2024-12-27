@@ -14,7 +14,6 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Ambil data UKT dari tabel siswa dan urutkan
     $query = "SELECT ukt FROM siswa ORDER BY ukt";
     $stmt = $pdo->query($query);
     $data = $stmt->fetchAll(PDO::FETCH_COLUMN);
@@ -24,24 +23,20 @@ try {
         exit;
     }
 
-    // Hitung Q1, Median, dan Q3
     $count = count($data);
-    $q1Index = floor(($count + 1) / 4) - 1; // Index Q1
-    $medianIndex = floor(($count + 1) / 2) - 1; // Index Median
-    $q3Index = floor((3 * ($count + 1)) / 4) - 1; // Index Q3
+    $q1Index = floor(($count + 1) / 4) - 1; //  Q1
+    $medianIndex = floor(($count + 1) / 2) - 1; //  Median
+    $q3Index = floor((3 * ($count + 1)) / 4) - 1; //  Q3
 
     $q1 = $data[$q1Index];
     $median = $data[$medianIndex];
     $q3 = $data[$q3Index];
 
-    // Hitung IQR
     $iqr = $q3 - $q1;
 
-    // Hitung batas bawah dan atas
     $lowerBound = $q1 - (1.5 * $iqr);
     $upperBound = $q3 + (1.5 * $iqr);
 
-    // Tampilkan informasi statistik
     echo "<br>Data UKT: " . implode(", ", $data);
     echo "<br>Q1: $q1";
     echo "<br>Median: $median";
