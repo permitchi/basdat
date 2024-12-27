@@ -41,15 +41,6 @@ try {
     $lowerBound = $q1 - (1.5 * $iqr);
     $upperBound = $q3 + (1.5 * $iqr);
 
-    // Memeriksa apakah nilai UKT yang dimasukkan adalah outlier
-    if ($ukt !== null) {
-        if ($ukt < $lowerBound || $ukt > $upperBound) {
-            echo "Nilai UKT ($ukt) adalah outlier.";
-        } else {
-            echo "Nilai UKT ($ukt) tidak termasuk outlier.";
-        }
-    }
-
     // Tampilkan informasi statistik
     echo "<br>Data UKT: " . implode(", ", $data);
     echo "<br>Q1: $q1";
